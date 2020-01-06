@@ -55,6 +55,8 @@ class Kernel extends HttpKernel
         'article.author.role' => \App\Http\Middleware\ArticleAuthorRoleMiddleware::class,
         'master.role' => \App\Http\Middleware\MasterRoleMiddleware::class,
 
+        'auth.jwt'  =>  \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

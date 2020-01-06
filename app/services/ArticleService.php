@@ -32,16 +32,16 @@ class ArticleService
 
     public function store(Request $request)
     {
-        $this->articleRepo->articleStore($request);
-
-        return;
+        return $this->articleRepo->articleStore($request);
     }
 
     public function show($id)
     {
+        $article = $this->articleRepo->getArticleById($id);
+        $messages = $this->messageRepo->getMessageByArticleId($id);
         return [
-            'articles' => $this->articleRepo->getArticleById($id),
-            'messages' => $this->messageRepo->getMessageByArticleId($id),
+            'article' => $article,
+            'messages' => $messages,
         ];
     }
 
@@ -52,14 +52,12 @@ class ArticleService
 
     public function update($request, $id)
     {
-        $this->articleRepo->articleEdit($request, $id);
-        return;
+        return $this->articleRepo->articleEdit($request, $id);
     }
 
     public function destroy($id)
     {
-        $this->articleRepo->articleDestroy($id);
-        return;
+        return $this->articleRepo->articleDestroy($id);
     }
 
     public function catagory($catagory)
