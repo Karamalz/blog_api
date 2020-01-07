@@ -13,26 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::/*middleware('auth:api')->*/get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('login', 'ApiController@login');
+Route::post('/login', 'ApiController@login');
 
-Route::post('register', 'ApiController@register');
+Route::post('/register', 'ApiController@register');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'ApiController@logout');
-
-    Route::get('tasks', 'TaskController@index');
-
-    Route::get('tasks/{id}', 'TaskController@show');
-
-    Route::post('tasks', 'TaskController@store');
-
-    Route::put('tasks/{id}', 'TaskController@update');
-    
-    Route::delete('tasks/{id}', 'TaskController@destroy');
+    Route::post('/logout', 'ApiController@logout');
 });
 
 //home
@@ -41,16 +31,14 @@ Route::get('/home', 'ArticleController@index')->name('home');
 Route::get('/', 'ArticleController@index');
 
 //article
-Route::group(['prefix' => 'article'], function () {
-    Route::get('/create', 'ArticleController@create');
-
+Route::group(['prefix' => 'article', 'middleware' => 'auth.jwt'], function () {
     Route::post('/store', 'ArticleController@store');
 
-    Route::get('/{id}/edit', 'ArticleController@edit');
+    Route::get('/{id}/edit', 'ArticleController@edit')->middleware('article.author.role');
 
-    Route::post('/update/{id}', 'ArticleController@update');
+    Route::post('/update/{id}', 'ArticleController@update')->middleware('article.author.role');
 
-    Route::post('/{id}/delete', 'ArticleController@destroy');
+    Route::post('/{id}/delete', 'ArticleController@destroy')->middleware('article.author.role');
 
     Route::get('/', 'ArticleController@index');
 
@@ -65,16 +53,16 @@ Route::group(['prefix' => 'article'], function () {
 
 // message
 Route::group(['prefix' => 'message'], function () {
-    Route::post('/{article_id}', 'MessageController@store');
+    Route::post('/{articleId}', 'MessageController@store');
 
-    Route::get('/delete/{article_id}/{message_id}', 'MessageController@destroy');
+    Route::get('/delete/{articleId}/{messageId}', 'MessageController@destroy')->middleware('message.author.role');
 });
 
 //role
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/index', 'RoleController@index')->middleware(['master.role']);
+Route::group(['prefix' => 'admin', 'middleware' => 'master.role' ], function () {
+    Route::get('/index', 'RoleController@index');
 
-    Route::get('/role/{id}/upgrade', 'RoleController@roleUpgrade');
+    Route::get('/role/upgrade/{userId}', 'RoleController@roleUpgrade');
 
-    Route::get('/role/{id}/downgrade', 'RoleController@roleDowngrade');
+    Route::get('/role/{userId}/downgrade', 'RoleController@roleDowngrade');
 });

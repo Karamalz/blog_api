@@ -18,27 +18,23 @@ class ArticleRepository
 
     public function articleStore(Request $request)
     {
-        Article::create([
+        return Article::create([
             'author_id' => Auth::user()->id,
             'author' => Auth::user()->name,
             'title' => $request->title,
             'catagory' => $request->catagory,
             'content' => $request->content,
         ]);
-
-        return;
     }
 
     public function articleEdit(Request $request, $id)
     {
-        Article::where('id', $id)
+        return Article::where('id', $id)
             ->update([
                 'title' => $request->title,
                 'catagory' => $request->catagory,
                 'content' => $request->content,
             ]);
-
-        return;
     }
 
     public function articleDestroy($id)

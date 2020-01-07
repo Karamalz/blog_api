@@ -20,15 +20,15 @@ class RoleController extends Controller
             ->with('users',$users);
     }
 
-    public function roleUpgrade($id) 
+    public function roleUpgrade($userId) 
     {
-        $this->roleService->upgradeRole($id);
+        $this->roleService->upgradeRole($userId);
         return redirect('/admin/index');
     }
 
-    public function roleDowngrade($id)
+    public function roleDowngrade($userId)
     {
-        $this->roleService->downgradeRole($id);
+        $this->roleService->downgradeRole($userId);
         return redirect('/admin/index');
     }
     

@@ -5,17 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\articleRequest;
 use App\services\ArticleService;
 use Illuminate\Http\Request;
-use JWTAuth;
 
 class ArticleController extends Controller
 {
     protected $articleService;
-    protected $user;
 
     public function __construct(ArticleService $articleService)
     {
         $this->articleService = $articleService;
-        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
     // display all articles
@@ -40,7 +37,7 @@ class ArticleController extends Controller
     // store input article
     public function store(articleRequest $request)
     {
-        if ($this->articleService->store($request)) {
+        if (!$this->articleService->store($request)) {
             return response()->json([
                 'success' => false,
                 'message' => '文章儲存失敗',
@@ -99,7 +96,7 @@ class ArticleController extends Controller
     // update $id article
     public function update(articleRequest $request, $id)
     {
-        if ($this->articleService->update($request, $id)) {
+        if (!$this->articleService->update($request, $id)) {
             return response()->json([
                 'success' => false,
                 'message' => '修改文章失敗',
@@ -117,7 +114,7 @@ class ArticleController extends Controller
     // destroy $id article
     public function destroy($id)
     {
-        if ($this->articleService->destroy($id)) {
+        if (!$this->articleService->destroy($id)) {
             return response()->json([
                 'success' => false,
                 'message' => '刪除文章失敗',
@@ -136,32 +133,56 @@ class ArticleController extends Controller
     public function catagory($catagory)
     {
         $articles = $this->articleService->catagory($catagory);
-        return response()->json([
-            'success' => !$articles->isEmpty() ? true : false,
-            'message' => !$articles->isEmpty() ? '查詢成功' : '沒有此分類文章',
-            'data' => !$articles->isEmpty() ? $articles : '',
-        ], 200);
+        if ($articles->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => '無此分類文章',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => '查詢成功',
+                'data' => $articles,
+            ], 200);
+        }
     }
 
     // find and show article which title contains $request->key
     public function search(Request $request)
     {
         $articles = $this->articleService->search($request->key);
-        return response()->json([
-            'success' => !$articles->isEmpty() ? true : false,
-            'message' => !$articles->isEmpty() ? '查詢成功' : '沒有此關鍵字文章',
-            'data' => !$articles->isEmpty() ? $articles : '',
-        ], 200);
+        if ($articles->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => '無此關鍵字文章',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => '查詢成功',
+                'data' => $articles,
+            ], 200);
+        }
     }
 
     // find and show article which author is $name
     public function user($name)
     {
         $articles = $this->articleService->user($name);
-        return response()->json([
-            'success' => !$articles->isEmpty() ? true : false,
-            'message' => !$articles->isEmpty() ? '查詢成功' : '沒有此作者文章',
-            'data' => !$articles->isEmpty() ? $articles : '',
-        ], 200);
+        if ($articles->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => '無此作者文章',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => '查詢成功',
+                'data' => $articles,
+            ], 200);
+        }
     }
 }

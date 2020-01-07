@@ -18,27 +18,21 @@ class RoleService
         $this->userRepo = $userRepo;
     }
 
-    public function initRole($id)
-    {
-        $this->roleRepo->upgrade($id);
-        return;
-    }
-
     public function index()
     {
         $users = $this->userRepo->index();
         return $users;
     }
 
-    public function upgradeRole($id)
+    public function upgradeRole($userId)
     {
-        $this->roleRepo->upgrade($id);
+        $this->roleRepo->upgrade($userId);
         return;
     }
 
-    public function downgradeRole($id)
+    public function downgradeRole($userId)
     {
-        $this->roleRepo->downgrade($id);
+        $this->roleRepo->downgrade($userId);
         return;
     }
 

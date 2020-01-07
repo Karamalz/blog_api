@@ -14,17 +14,17 @@ class MessageController extends Controller
         $this->messageService = $messageService;
     }
 
-    public function store(messageRequest $request, $article_id)
+    public function store(messageRequest $request, $articleId)
     {
-        $this->messageService->store($request, $article_id);
+        $this->messageService->store($request, $articleId);
 
-        return redirect('/article/' . $article_id);
+        return redirect('/article/' . $articleId);
     }
 
-    public function destroy($article_id, $message_id)
+    public function destroy($articleId, $messageId)
     {
-        $this->messageService->destroy($message_id);
+        $this->messageService->destroy($messageId);
 
-        return Redirect('/article/' . $article_id);
+        return Redirect('/article/' . $articleId);
     }
 }

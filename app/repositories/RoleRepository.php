@@ -16,24 +16,24 @@ class RoleRepository{
         $this->role = $role;
     }
 
-    public function checkRoleInit($id)
+    public function checkRoleInit($userId)
     {
         Role::firstOrCreate(
-            ['uid' => $id],
+            ['uid' => $userId],
             ['roles' => 'normal',
             'description' => 'no special']
         );
         return;
     }
 
-    public function upgrade($id)
+    public function upgrade($userId)
     {
-        Role::where('uid', $id)->update(['roles' => 'admin']);
+        Role::where('uid', $userId)->update(['roles' => 'admin']);
     }
 
-    public function downgrade($id)
+    public function downgrade($userId)
     {
-        Role::where('uid', $id)->update(['roles' => 'normal']);
+        Role::where('uid', $userId)->update(['roles' => 'normal']);
     }
 
 }

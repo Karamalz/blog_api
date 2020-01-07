@@ -6,7 +6,7 @@ use App\repositories\ArticleRepository;
 use App\repositories\MessageRepository;
 use App\repositories\RoleRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ArticleService
 {
@@ -23,8 +23,8 @@ class ArticleService
 
     public function index()
     {
-        if (Auth::check()) {
-            $this->roleRepo->checkRoleInit(Auth::user()->id);
+        if (JWTAuth::check()) {
+            $this->roleRepo->checkRoleInit(JWTAuth::user()->id);
         }
 
         return $this->articleRepo->getAllArticle();
