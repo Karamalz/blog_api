@@ -4,8 +4,6 @@ namespace App\services;
 
 use App\repositories\RoleRepository;
 use App\repositories\UserRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoleService
 {

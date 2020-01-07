@@ -4,9 +4,10 @@ namespace App\Repositories;
 
 use App\Message;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class MessageRepository{
+class MessageRepository
+{
 
     protected $message;
 
@@ -15,31 +16,29 @@ class MessageRepository{
         $this->message = $message;
     }
 
-    public function messageStore(Request $request, $article_id)
+    public function messageStore(Request $request, $articleId)
     {
-        Message::create([
-            'message_article_id' => $article_id,
-            'message_author_id' => Auth::user()->id,
-            'message_author' => Auth::user()->name,
+        return Message::create([
+            'message_article_id' => $articleId,
+            'message_author_id' => JWTAuth::user()->id,
+            'message_author' => JWTAuth::user()->name,
             'message_content' => $request->content,
         ]);
-
-        return;
     }
 
-    public function messageDestroy($id)
-    {        
-        return Message::where('message_id', '=', $id)->delete();
-    }
-
-    public function getmessageById($id)
+    public function messageDestroy($messageId)
     {
-        return Message::where('message_id', '=', $id)->get();
+        return Message::where('message_id', '=', $messageId)->delete();
     }
-    
-    public function getmessageByArticleId($id)
+
+    public function getmessageById($messageId)
     {
-        return Message::where('message_article_id', '=', $id)->get();
+        return Message::where('message_id', '=', $messageId)->get();
+    }
+
+    public function getmessageByArticleId($articleId)
+    {
+        return Message::where('message_article_id', '=', $articleId)->get();
     }
 
 }

@@ -3,11 +3,9 @@
 namespace App\Repositories;
 
 use App\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 
-class RoleRepository{
+class RoleRepository
+{
 
     protected $role;
 
@@ -18,12 +16,11 @@ class RoleRepository{
 
     public function checkRoleInit($userId)
     {
-        Role::firstOrCreate(
+        return Role::firstOrCreate(
             ['uid' => $userId],
             ['roles' => 'normal',
-            'description' => 'no special']
+                'description' => 'no special']
         );
-        return;
     }
 
     public function upgrade($userId)

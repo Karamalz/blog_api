@@ -53,9 +53,9 @@ class ArticleController extends Controller
     }
 
     // show $id article
-    public function show($id)
+    public function show($articleId)
     {
-        $article = $this->articleService->show($id);
+        $article = $this->articleService->show($articleId);
         if ($article['article']->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -75,9 +75,9 @@ class ArticleController extends Controller
     }
 
     // show edit article page with $id article
-    public function edit($id)
+    public function edit($articleId)
     {
-        $article = $this->articleService->edit($id);
+        $article = $this->articleService->edit($articleId);
         if ($article->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -94,9 +94,9 @@ class ArticleController extends Controller
     }
 
     // update $id article
-    public function update(articleRequest $request, $id)
+    public function update(articleRequest $request, $articleId)
     {
-        if (!$this->articleService->update($request, $id)) {
+        if (!$this->articleService->update($request, $articleId)) {
             return response()->json([
                 'success' => false,
                 'message' => '修改文章失敗',
@@ -112,9 +112,9 @@ class ArticleController extends Controller
     }
 
     // destroy $id article
-    public function destroy($id)
+    public function destroy($articleId)
     {
-        if (!$this->articleService->destroy($id)) {
+        if (!$this->articleService->destroy($articleId)) {
             return response()->json([
                 'success' => false,
                 'message' => '刪除文章失敗',

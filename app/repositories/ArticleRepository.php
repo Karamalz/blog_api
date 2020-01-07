@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Article;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ArticleRepository
 {
@@ -19,17 +19,17 @@ class ArticleRepository
     public function articleStore(Request $request)
     {
         return Article::create([
-            'author_id' => Auth::user()->id,
-            'author' => Auth::user()->name,
+            'author_id' => JWTAuth::user()->id,
+            'author' => JWTAuth::user()->name,
             'title' => $request->title,
             'catagory' => $request->catagory,
             'content' => $request->content,
         ]);
     }
 
-    public function articleEdit(Request $request, $id)
+    public function articleEdit(Request $request, $articleId)
     {
-        return Article::where('id', $id)
+        return Article::where('id', $articleId)
             ->update([
                 'title' => $request->title,
                 'catagory' => $request->catagory,
@@ -37,9 +37,9 @@ class ArticleRepository
             ]);
     }
 
-    public function articleDestroy($id)
+    public function articleDestroy($articleId)
     {
-        return Article::find($id)->delete();
+        return Article::find($articleId)->delete();
     }
 
     public function getAllArticle()
@@ -47,9 +47,9 @@ class ArticleRepository
         return Article::orderby('id')->get();
     }
 
-    public function getArticleById($id)
+    public function getArticleById($articleId)
     {
-        return Article::where('id', '=', $id)->get();
+        return Article::where('id', '=', $articleId)->get();
     }
 
     public function getArticleByCatagory($catagory)

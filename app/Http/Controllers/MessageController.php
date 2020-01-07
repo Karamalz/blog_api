@@ -16,15 +16,36 @@ class MessageController extends Controller
 
     public function store(messageRequest $request, $articleId)
     {
-        $this->messageService->store($request, $articleId);
 
-        return redirect('/article/' . $articleId);
+        if (!$this->messageService->store($request, $articleId)) {
+            return response()->json([
+                'success' => false,
+                'message' => '留言失敗',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => '留言成功',
+                'data' => '',
+            ], 200);
+        }
     }
 
     public function destroy($articleId, $messageId)
     {
-        $this->messageService->destroy($messageId);
-
-        return Redirect('/article/' . $articleId);
+        if (!$this->messageService->destroy($messageId)) {
+            return response()->json([
+                'success' => false,
+                'message' => '刪除留言失敗',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => '留言刪除成功',
+                'data' => '',
+            ], 200);
+        }
     }
 }

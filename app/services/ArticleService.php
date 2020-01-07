@@ -35,29 +35,29 @@ class ArticleService
         return $this->articleRepo->articleStore($request);
     }
 
-    public function show($id)
+    public function show($articleId)
     {
-        $article = $this->articleRepo->getArticleById($id);
-        $messages = $this->messageRepo->getMessageByArticleId($id);
+        $article = $this->articleRepo->getArticleById($articleId);
+        $messages = $this->messageRepo->getMessageByArticleId($articleId);
         return [
             'article' => $article,
             'messages' => $messages,
         ];
     }
 
-    public function edit($id)
+    public function edit($articleId)
     {
-        return $this->articleRepo->getArticleById($id);
+        return $this->articleRepo->getArticleById($articleId);
     }
 
-    public function update($request, $id)
+    public function update($request, $articleId)
     {
-        return $this->articleRepo->articleEdit($request, $id);
+        return $this->articleRepo->articleEdit($request, $articleId);
     }
 
-    public function destroy($id)
+    public function destroy($articleId)
     {
-        return $this->articleRepo->articleDestroy($id);
+        return $this->articleRepo->articleDestroy($articleId);
     }
 
     public function catagory($catagory)
@@ -75,8 +75,8 @@ class ArticleService
         return $this->articleRepo->getArticleByUsername($name);
     }
 
-    public function getArticle($id)
+    public function getArticle($articleId)
     {
-        return $this->articleRepo->getArticleById($id);
+        return $this->articleRepo->getArticleById($articleId);
     }
 }

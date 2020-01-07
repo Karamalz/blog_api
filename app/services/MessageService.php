@@ -3,8 +3,6 @@
 namespace App\services;
 
 use App\repositories\MessageRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class MessageService
 {
@@ -15,20 +13,18 @@ class MessageService
         $this->messageRepo = $messageRepo;
     }
 
-    public function getMessage($message_id)
+    public function getMessage($messageId)
     {
-        return $this->messageRepo->getMessageById($message_id);
+        return $this->messageRepo->getMessageById($messageId);
     }
 
-    public function store($request, $article_id)
+    public function store($request, $articleId)
     {
-        $this->messageRepo->messageStore($request, $article_id);
-        return;
+        return $this->messageRepo->messageStore($request, $articleId);
     }
 
-    public function destroy($message_id)
+    public function destroy($messageId)
     {
-        $this->messageRepo->messageDestroy($message_id);        
-        return;
+        return $this->messageRepo->messageDestroy($messageId);
     }
 }

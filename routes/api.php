@@ -17,12 +17,12 @@ Route::/*middleware('auth:api')->*/get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', 'ApiController@login');
+Route::post('/login', 'AuthController@login');
 
-Route::post('/register', 'ApiController@register');
+Route::post('/register', 'AuthController@register');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::post('/logout', 'ApiController@logout');
+    Route::post('/logout', 'AuthController@logout');
 });
 
 //home
@@ -34,11 +34,11 @@ Route::get('/', 'ArticleController@index');
 Route::group(['prefix' => 'article', 'middleware' => 'auth.jwt'], function () {
     Route::post('/store', 'ArticleController@store');
 
-    Route::get('/{id}/edit', 'ArticleController@edit')->middleware('article.author.role');
+    Route::get('/edit/{articleId}', 'ArticleController@edit')->middleware('article.author.role');
 
-    Route::post('/update/{id}', 'ArticleController@update')->middleware('article.author.role');
+    Route::post('/update/{articleId}', 'ArticleController@update')->middleware('article.author.role');
 
-    Route::post('/{id}/delete', 'ArticleController@destroy')->middleware('article.author.role');
+    Route::post('/delete/{articleId}', 'ArticleController@destroy')->middleware('article.author.role');
 
     Route::get('/', 'ArticleController@index');
 
@@ -48,7 +48,7 @@ Route::group(['prefix' => 'article', 'middleware' => 'auth.jwt'], function () {
 
     Route::get('/user/{name}', 'ArticleController@user');
 
-    Route::get('/{id}', 'ArticleController@show');
+    Route::get('/{articleId}', 'ArticleController@show');
 });
 
 // message

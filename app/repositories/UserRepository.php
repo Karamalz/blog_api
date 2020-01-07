@@ -2,14 +2,11 @@
 
 namespace App\Repositories;
 
-use DB;
 use App\User;
-use App\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
+use DB;
 
-class UserRepository{
+class UserRepository
+{
 
     protected $user;
 
@@ -26,6 +23,11 @@ class UserRepository{
             ->orderBy('users.id')
             ->get();
         return $users;
+    }
+
+    public function register()
+    {
+
     }
 
 }

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
-class APIController extends Controller
+class AuthController extends Controller
 {
     public $loginAfterSignUp = true;
 
@@ -66,6 +66,7 @@ class APIController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Register success!',
             'data' => $user,
         ], 200);
     }
