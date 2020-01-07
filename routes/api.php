@@ -53,7 +53,7 @@ Route::group(['prefix' => 'message'], function () {
 });
 
 //role
-Route::group(['prefix' => 'admin', 'middleware' => 'master.role'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['master.role', 'auth.jwt']], function () {
     Route::get('/index', 'RoleController@index');
 
     Route::get('/role/upgrade/{userId?}', 'RoleController@roleUpgrade');

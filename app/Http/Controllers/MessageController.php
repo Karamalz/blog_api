@@ -16,7 +16,6 @@ class MessageController extends Controller
 
     public function store(messageRequest $request, $articleId)
     {
-
         if (!$this->messageService->store($request, $articleId)) {
             return response()->json([
                 'success' => false,

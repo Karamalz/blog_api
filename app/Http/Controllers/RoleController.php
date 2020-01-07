@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\services\RoleService;
-use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -12,24 +11,58 @@ class RoleController extends Controller
     {
         $this->roleService = $roleService;
     }
-    
+
     public function index()
     {
         $users = $this->roleService->index();
-        return view('admin')
-            ->with('users',$users);
+        if ($users->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'NO users information',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Query success',
+                'data' => $users,
+            ], 200);
+        }
     }
 
-    public function roleUpgrade($userId) 
+    public function roleUpgrade($userId)
     {
-        $this->roleService->upgradeRole($userId);
-        return redirect('/admin/index');
+        
+        if ($this->roleService->upgradeRole($userId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upgrade role',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Upgrade success',
+                'data' => '',
+            ], 200);
+        }
     }
 
     public function roleDowngrade($userId)
     {
-        $this->roleService->downgradeRole($userId);
-        return redirect('/admin/index');
+        if ($this->roleService->downgradeRole($userId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to downgrade role',
+                'data' => '',
+            ], 500);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Downgrade success',
+                'data' => '',
+            ], 200);
+        }
     }
-    
+
 }
