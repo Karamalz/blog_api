@@ -5,7 +5,7 @@ namespace App\services;
 use App\repositories\RoleRepository;
 use App\repositories\UserRepository;
 
-class RoleService
+class UserService
 {
     protected $roleRepo;
     protected $userRepo;
@@ -16,20 +16,11 @@ class RoleService
         $this->userRepo = $userRepo;
     }
 
-    public function index()
+    public function register($request)
     {
-        $users = $this->userRepo->index();
-        return $users;
-    }
-
-    public function upgradeRole($userId)
-    {
-        return $this->roleRepo->upgrade($userId);
-    }
-
-    public function downgradeRole($userId)
-    {
-        return $this->roleRepo->downgrade($userId);
+        $reg = $this->userRepo->register($request);
+        $this->roleRepo->setInitRole($reg->id);
+        return $reg;
     }
 
 }

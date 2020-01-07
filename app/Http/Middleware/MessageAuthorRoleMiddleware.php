@@ -18,7 +18,7 @@ class MessageAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        $message = $this->messageService->getMessage($request->route('message_id'));
+        $message = $this->messageService->getMessage($request->route('messageId'));
         if(JWTAuth::user()->roles->roles=='normal' && $message[0]->message_author_id != JWTAuth::user()->id) {
             return response()->json([
                 'result' => false,

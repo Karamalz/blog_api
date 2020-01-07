@@ -23,10 +23,6 @@ class ArticleService
 
     public function index()
     {
-        if (JWTAuth::check()) {
-            $this->roleRepo->checkRoleInit(JWTAuth::user()->id);
-        }
-
         return $this->articleRepo->getAllArticle();
     }
 

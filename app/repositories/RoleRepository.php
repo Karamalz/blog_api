@@ -14,13 +14,13 @@ class RoleRepository
         $this->role = $role;
     }
 
-    public function checkRoleInit($userId)
+    public function setInitRole($userId)
     {
-        return Role::firstOrCreate(
-            ['uid' => $userId],
-            ['roles' => 'normal',
-                'description' => 'no special']
-        );
+        return Role::create([
+            'uid' => $userId,
+            'roles' => 'normal',
+            'description' => 'no special',
+        ]);
     }
 
     public function upgrade($userId)

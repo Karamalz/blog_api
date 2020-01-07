@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationFormRequest;
-use App\User;
+use App\services\UserService;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -11,6 +11,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
 {
     public $loginAfterSignUp = true;
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function login(Request $request)
     {
@@ -54,20 +60,16 @@ class AuthController extends Controller
  */
     public function register(RegistrationFormRequest $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        $user = $this->userService->register($request);
 
         if ($this->loginAfterSignUp) {
             return $this->login($request);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Register success!',
-            'data' => $user,
+            'success' => $user ? true : false,
+            'message' => $user ? 'Register success!' : 'Register fail!',
+            'data' => $user ? $user : '',
         ], 200);
     }
 }

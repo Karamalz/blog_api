@@ -32,7 +32,7 @@ class MessageController extends Controller
         }
     }
 
-    public function destroy($articleId, $messageId)
+    public function destroy($messageId)
     {
         if (!$this->messageService->destroy($messageId)) {
             return response()->json([

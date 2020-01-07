@@ -17,7 +17,7 @@ class ArticleAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        $article = $this->articleService->getArticle($request->route('id'));
+        $article = $this->articleService->getArticle($request->route('articleId'));
         if ($article[0]->author_id != JWTAuth::user()->id && JWTAuth::user()->roles->roles=='normal') {
             return response()->json([
                 'result' => false,

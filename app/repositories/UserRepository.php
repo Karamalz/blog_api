@@ -25,9 +25,13 @@ class UserRepository
         return $users;
     }
 
-    public function register()
+    public function register($request)
     {
-
+        return User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
     }
 
 }
