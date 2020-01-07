@@ -31,6 +31,11 @@ class MessageRepository
         return Message::where('message_id', '=', $messageId)->delete();
     }
 
+    public function messageDestroyByArticleId($articleId)
+    {
+        return Message::where('message_article_id', '=', $articleId)->delete();
+    }
+
     public function getmessageById($messageId)
     {
         return Message::where('message_id', '=', $messageId)->get();

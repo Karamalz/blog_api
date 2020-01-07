@@ -22,13 +22,13 @@ class ArticleController extends Controller
         if ($articles->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '查詢失敗',
+                'message' => 'Query failed',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => $articles,
             ], 200);
         }
@@ -40,13 +40,13 @@ class ArticleController extends Controller
         if (!$this->articleService->store($request)) {
             return response()->json([
                 'success' => false,
-                'message' => '文章儲存失敗',
+                'message' => 'Failed to store article!',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '文章新增成功',
+                'message' => 'Store article success',
                 'data' => '',
             ], 200);
         }
@@ -59,13 +59,13 @@ class ArticleController extends Controller
         if ($article['article']->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '此文章不存在',
+                'message' => 'Article with ID:' . $articleId . ' is not exist!',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => [
                     'articles' => $article['article'],
                     'messages' => $article['messages'],
@@ -81,13 +81,13 @@ class ArticleController extends Controller
         if ($article->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '此文章不存在',
+                'message' => 'Article with ID:' . $articleId . ' is not exist!',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => $article,
             ], 200);
         }
@@ -99,13 +99,13 @@ class ArticleController extends Controller
         if (!$this->articleService->update($request, $articleId)) {
             return response()->json([
                 'success' => false,
-                'message' => '修改文章失敗',
+                'message' => 'Failed to edit article',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '文章修改成功',
+                'message' => 'Edit article success',
                 'data' => '',
             ], 200);
         }
@@ -117,13 +117,13 @@ class ArticleController extends Controller
         if (!$this->articleService->destroy($articleId)) {
             return response()->json([
                 'success' => false,
-                'message' => '刪除文章失敗',
+                'message' => 'Failed to delete article',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '文章刪除成功',
+                'message' => 'Delete article success',
                 'data' => '',
             ], 200);
         }
@@ -136,13 +136,13 @@ class ArticleController extends Controller
         if ($articles->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '無此分類文章',
+                'message' => 'There is no article with catagory:' . $catagory,
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => $articles,
             ], 200);
         }
@@ -155,13 +155,13 @@ class ArticleController extends Controller
         if ($articles->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '無此關鍵字文章',
+                'message' => 'There is no article with keyword:' . $request->key,
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => $articles,
             ], 200);
         }
@@ -174,13 +174,13 @@ class ArticleController extends Controller
         if ($articles->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => '無此作者文章',
+                'message' => 'There is no article with author:' . $name,
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '查詢成功',
+                'message' => 'Query success',
                 'data' => $articles,
             ], 200);
         }

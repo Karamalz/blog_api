@@ -17,11 +17,26 @@ class ArticleAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        $article = $this->articleService->getArticle($request->route('articleId'));
-        if ($article[0]->author_id != JWTAuth::user()->id && JWTAuth::user()->roles->roles=='normal') {
+        if ($request->route('articleId') == '') {
             return response()->json([
-                'result' => false,
+                'success' => false,
+                'message' => 'Invalid article ID',
+                'data' => '',
+            ], 404);
+        }
+        $articles = $this->articleService->getArticle($request->route('articleId'));
+        if ($articles->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Article with ID:' . $request->route('articleId') . ' is not exist',
+                'data' => '',
+            ], 404);
+        }
+        if ($articles[0]->author_id != JWTAuth::user()->id && JWTAuth::user()->roles->roles == 'normal') {
+            return response()->json([
+                'success' => false,
                 'message' => 'You are not the author or admin!',
+                'data' => '',
             ], 403);
         }
         return $next($request);

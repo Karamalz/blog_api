@@ -53,7 +53,8 @@ class ArticleService
 
     public function destroy($articleId)
     {
-        return $this->articleRepo->articleDestroy($articleId);
+        $this->messageRepo->messageDestroyByArticleId($articleId);
+        return $this->articleRepo->articleDestroy($articleId);           
     }
 
     public function catagory($catagory)

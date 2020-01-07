@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\services\MessageService;
+use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Http\Request;
 
 class MessageAuthorRoleMiddleware
 {
@@ -18,8 +17,22 @@ class MessageAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
+        if ($request->route('messageId') == '') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid message ID',
+                'data' => '',
+            ], 404);
+        }
         $message = $this->messageService->getMessage($request->route('messageId'));
-        if(JWTAuth::user()->roles->roles=='normal' && $message[0]->message_author_id != JWTAuth::user()->id) {
+        if ($message->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Message with ID:' . $request->route('messageId') . ' is not exist',
+                'data' => '',
+            ], 404);
+        }
+        if (JWTAuth::user()->roles->roles == 'normal' && $message[0]->message_author_id != JWTAuth::user()->id) {
             return response()->json([
                 'result' => false,
                 'message' => 'You are not the author or admin!',
