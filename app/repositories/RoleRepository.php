@@ -25,12 +25,12 @@ class RoleRepository
 
     public function upgrade($userId)
     {
-        Role::where('uid', $userId)->update(['roles' => 'admin']);
+        return Role::where('uid', $userId)->update(['roles' => 'admin']);
     }
 
     public function downgrade($userId)
     {
-        Role::where('uid', $userId)->update(['roles' => 'normal']);
+        return Role::where('uid', $userId)->update(['roles' => 'normal']);
     }
 
 }

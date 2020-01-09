@@ -31,7 +31,7 @@ class articleRequest extends FormRequest
     {
         return [
             'title' => ['required', 'max:255', 'regex:/^[A-Za-z0-9?., ]+$/'],
-            'catagory' => ['required', 'in:Laravel, PHP, MySQL, C++, Vuejs, Else'],
+            'catagory' => ['required', 'in:Laravel,PHP,MySQL,C++,Vuejs,Else'],
             'content' => ['required', 'max:255', 'regex:/^[A-Za-z0-9?., ]+$/'],
         ];
     }

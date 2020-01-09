@@ -32,8 +32,14 @@ class RoleController extends Controller
 
     public function roleUpgrade($userId)
     {
-        
-        if ($this->roleService->upgradeRole($userId)) {
+        if (!preg_match('/\d{1,}/', $userId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid user ID',
+                'data' => '',
+            ], 422);
+        }
+        if (!$this->roleService->upgradeRole($userId)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to upgrade role',
@@ -50,7 +56,14 @@ class RoleController extends Controller
 
     public function roleDowngrade($userId)
     {
-        if ($this->roleService->downgradeRole($userId)) {
+        if (!preg_match('/\d{1,}/', $userId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid user ID',
+                'data' => '',
+            ], 422);
+        }
+        if (!$this->roleService->downgradeRole($userId)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to downgrade role',

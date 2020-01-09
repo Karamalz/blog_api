@@ -34,8 +34,9 @@ class MessageAuthorRoleMiddleware
         }
         if (JWTAuth::user()->roles->roles == 'normal' && $message[0]->message_author_id != JWTAuth::user()->id) {
             return response()->json([
-                'result' => false,
+                'success' => false,
                 'message' => 'You are not the author or admin!',
+                'data' => '',
             ], 403);
         }
         return $next($request);

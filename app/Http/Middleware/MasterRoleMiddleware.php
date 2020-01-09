@@ -3,18 +3,17 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Http\Request;
 
 class MasterRoleMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if(JWTAuth::user()->roles->roles != 'WebMaster') {
+        if (JWTAuth::user()->roles->roles != 'WebMaster') {
             return response()->json([
-                'result' => false,
+                'success' => false,
                 'message' => 'You are not WebMaster!',
+                'date' => '',
             ], 403);
         }
         return $next($request);

@@ -55,6 +55,13 @@ class ArticleController extends Controller
     // show $id article
     public function show($articleId)
     {
+        if (!preg_match('/\d{1,}/', $articleId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid article ID',
+                'data' => '',
+            ], 422);
+        }
         $article = $this->articleService->show($articleId);
         if ($article['article']->isEmpty()) {
             return response()->json([

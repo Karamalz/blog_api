@@ -16,6 +16,13 @@ class MessageController extends Controller
 
     public function store(messageRequest $request, $articleId)
     {
+        if (!preg_match('/\d{1,}/', $articleId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid article ID',
+                'data' => '',
+            ], 422);
+        }
         if (!$this->messageService->store($request, $articleId)) {
             return response()->json([
                 'success' => false,
