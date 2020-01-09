@@ -19,13 +19,13 @@ class MessageController extends Controller
         if (!$this->messageService->store($request, $articleId)) {
             return response()->json([
                 'success' => false,
-                'message' => '留言失敗',
+                'message' => 'Failed to leave message',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '留言成功',
+                'message' => 'Message success',
                 'data' => '',
             ], 200);
         }
@@ -36,13 +36,13 @@ class MessageController extends Controller
         if (!$this->messageService->destroy($messageId)) {
             return response()->json([
                 'success' => false,
-                'message' => '刪除留言失敗',
+                'message' => 'Failed to delete message',
                 'data' => '',
             ], 500);
         } else {
             return response()->json([
                 'success' => true,
-                'message' => '留言刪除成功',
+                'message' => 'Delete message success',
                 'data' => '',
             ], 200);
         }

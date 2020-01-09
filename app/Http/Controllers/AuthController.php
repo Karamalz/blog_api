@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-    public $loginAfterSignUp = true;
+    public $loginAfterSignUp = false;
     protected $userService;
 
     public function __construct(UserService $userService)
@@ -27,13 +27,15 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid Email or Password',
+                'data' => '',
             ], 401);
         }
 
         return response()->json([
             'success' => true,
-            'token' => $token,
-        ]);
+            'message' => 'login success!',
+            'data' => $token,
+        ], 200);
     }
 
     public function logout()
@@ -45,11 +47,13 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'User logged out successfully',
-            ]);
+                'data' => '',
+            ], 200);
         } catch (JWTException $exception) {
             return response()->json([
                 'success' => false,
                 'message' => 'Sorry, the user cannot be logged out',
+                'data' => '',
             ], 500);
         }
     }
@@ -62,14 +66,20 @@ class AuthController extends Controller
     {
         $user = $this->userService->register($request);
 
-        if ($this->loginAfterSignUp) {
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Register fail!',
+                'data' => '',
+            ], 500);
+        } else if ($this->loginAfterSignUp) {
             return $this->login($request);
+        } else {
+            return response()->json([
+                'success' => $user ? true : false,
+                'message' => $user ? 'Register success!' : 'Register fail!',
+                'data' => $user ? $user : '',
+            ], 200);
         }
-
-        return response()->json([
-            'success' => $user ? true : false,
-            'message' => $user ? 'Register success!' : 'Register fail!',
-            'data' => $user ? $user : '',
-        ], 200);
     }
 }

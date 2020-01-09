@@ -17,12 +17,12 @@ class ArticleAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        if ($request->route('articleId') == '') {
+        if (!preg_match('/\d{1,}/', $request->route('articleId'))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid article ID',
                 'data' => '',
-            ], 404);
+            ], 422);
         }
         $articles = $this->articleService->getArticle($request->route('articleId'));
         if ($articles->isEmpty()) {

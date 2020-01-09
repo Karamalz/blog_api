@@ -17,12 +17,12 @@ class MessageAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        if ($request->route('messageId') == '') {
+        if (!preg_match('/\d{1,}/', $request->route('messageId'))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid message ID',
                 'data' => '',
-            ], 404);
+            ], 422);
         }
         $message = $this->messageService->getMessage($request->route('messageId'));
         if ($message->isEmpty()) {

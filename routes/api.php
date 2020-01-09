@@ -20,9 +20,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 });
 
 //home
-Route::get('/home', 'ArticleController@index')->name('home');
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::get('/home', 'ArticleController@index');
 
-Route::get('/', 'ArticleController@index');
+    Route::get('/', 'ArticleController@index');
+});
 
 //article
 Route::group(['prefix' => 'article', 'middleware' => 'auth.jwt'], function () {
@@ -46,17 +48,26 @@ Route::group(['prefix' => 'article', 'middleware' => 'auth.jwt'], function () {
 });
 
 // message
-Route::group(['prefix' => 'message'], function () {
+Route::group(['prefix' => 'message', 'middleware' => 'auth.jwt'], function () {
     Route::post('/{articleId?}', 'MessageController@store');
 
     Route::get('/delete/{messageId?}', 'MessageController@destroy')->middleware('message.author.role');
 });
 
 //role
-Route::group(['prefix' => 'admin', 'middleware' => ['master.role', 'auth.jwt']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth.jwt', 'master.role']], function () {
     Route::get('/index', 'RoleController@index');
 
     Route::get('/role/upgrade/{userId?}', 'RoleController@roleUpgrade');
 
     Route::get('/role/downgrade/{userId?}', 'RoleController@roleDowngrade');
+});
+
+//fallback
+Route::fallback(function () {
+    return response()->json([
+        'success' => false,
+        'message' => 'Page Not Found.',
+        'data' => '',
+    ], 404);
 });
