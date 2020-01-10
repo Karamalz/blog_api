@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Message;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class messageRequest extends FormRequest
 {
@@ -26,7 +29,19 @@ class messageRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => ['required', 'max:255', 'regex:/^[A-Za-z0-9?., ]+$/']
+            'content' => ['required', 'max:255', 'regex:/^[A-Za-z0-9?., ]+$/'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'message' => $errors,
+                'data' => '',
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }
