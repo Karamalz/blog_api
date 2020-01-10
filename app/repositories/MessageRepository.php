@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Message;
+use App\entities\Message;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 

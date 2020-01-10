@@ -17,7 +17,7 @@ class MessageAuthorRoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        if (!preg_match('/\d{1,}/', $request->route('messageId'))) {
+        if (!preg_match('/^[0-9]+$/', $request->route('messageId'))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid message ID',

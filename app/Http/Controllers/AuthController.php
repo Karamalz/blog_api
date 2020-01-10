@@ -66,20 +66,10 @@ class AuthController extends Controller
     {
         $user = $this->userService->register($request);
 
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Register fail!',
-                'data' => '',
-            ], 500);
-        } else if ($this->loginAfterSignUp) {
-            return $this->login($request);
-        } else {
-            return response()->json([
-                'success' => $user ? true : false,
-                'message' => $user ? 'Register success!' : 'Register fail!',
-                'data' => $user ? $user : '',
-            ], 200);
-        }
+        return response()->json([
+            'success' => $user ? true : false,
+            'message' => $user ? 'Register success!' : 'Register fail!',
+            'data' => $user ? $user : '',
+        ], 200);
     }
 }

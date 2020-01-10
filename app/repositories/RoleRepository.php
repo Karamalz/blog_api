@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Role;
+use App\entities\Role;
 
 class RoleRepository
 {

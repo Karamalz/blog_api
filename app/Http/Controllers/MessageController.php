@@ -16,42 +16,28 @@ class MessageController extends Controller
 
     public function store(messageRequest $request, $articleId)
     {
-        if (!preg_match('/\d{1,}/', $articleId)) {
+        if (!preg_match('/^[0-9]+$/', $articleId)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid article ID',
                 'data' => '',
             ], 422);
         }
-        if (!$this->messageService->store($request, $articleId)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to leave message',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Message success',
-                'data' => '',
-            ], 200);
-        }
+        $response = $this->messageService->store($request, $articleId);
+        return response()->json([
+            'success' => true,
+            'message' => $response ? 'Message success' : 'Failed to leave message',
+            'data' => '',
+        ], 200);
     }
 
     public function destroy($messageId)
     {
-        if (!$this->messageService->destroy($messageId)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete message',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Delete message success',
-                'data' => '',
-            ], 200);
-        }
+        $response = $this->messageService->destroy($messageId);
+        return response()->json([
+            'success' => true,
+            'message' => $response ? 'Delete message success' : 'Failed to delete message',
+            'data' => '',
+        ], 200);
     }
 }

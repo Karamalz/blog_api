@@ -15,47 +15,32 @@ class ArticleController extends Controller
         $this->articleService = $articleService;
     }
 
-    // display all articles
+    // return all articles
     public function index()
     {
         $articles = $this->articleService->index();
-        if ($articles->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Query failed',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => $articles,
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => $articles->isEmpty() ? 'No Article found' : 'Query success',
+            'data' => $articles->isEmpty() ? '' : $articles,
+        ], 200);
     }
 
     // store input article
     public function store(articleRequest $request)
     {
-        if (!$this->articleService->store($request)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to store article!',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Store article success',
-                'data' => '',
-            ], 200);
-        }
+        $response = $this->articleService->store($request);
+        return response()->json([
+            'success' => true,
+            'message' => $response ? 'Store article success' : 'Failed to store article',
+            'data' => '',
+        ], 200);
     }
 
-    // show $id article
+    // return $id article & messages
     public function show($articleId)
     {
-        if (!preg_match('/\d{1,}/', $articleId)) {
+        if (!preg_match('/^[0-9]+$/', $articleId)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid article ID',
@@ -63,133 +48,79 @@ class ArticleController extends Controller
             ], 422);
         }
         $article = $this->articleService->show($articleId);
-        if ($article['article']->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Article with ID:' . $articleId . ' is not exist!',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => [
-                    'articles' => $article['article'],
-                    'messages' => $article['messages'],
-                ],
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => $article['article']->isEmpty() ? 'Article with ID:' . $articleId . ' is not exist!' : 'Query success',
+            'data' => $article['article']->isEmpty() ? '' : [
+                'articles' => $article['article'],
+                'messages' => $article['messages'],
+            ],
+        ], 200);
     }
 
-    // show edit article page with $id article
+    // return $id article
     public function edit($articleId)
     {
         $article = $this->articleService->edit($articleId);
-        if ($article->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Article with ID:' . $articleId . ' is not exist!',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => $article,
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Query success',
+            'data' => $article,
+        ], 200);
     }
 
     // update $id article
     public function update(articleRequest $request, $articleId)
     {
-        if (!$this->articleService->update($request, $articleId)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to edit article',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Edit article success',
-                'data' => '',
-            ], 200);
-        }
+        $response = $this->articleService->update($request, $articleId);
+        return response()->json([
+            'success' => true,
+            'message' => $response ? 'Update article success' : 'Failed to update article',
+            'data' => '',
+        ], 200);
     }
 
     // destroy $id article
     public function destroy($articleId)
     {
-        if (!$this->articleService->destroy($articleId)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete article',
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Delete article success',
-                'data' => '',
-            ], 200);
-        }
+        $response = $this->articleService->destroy($articleId);
+        return response()->json([
+            'success' => true,
+            'message' => $response ? 'Delete article success' : 'Failed to delete article',
+            'data' => '',
+        ], 200);
     }
 
-    // find and show all $catagory article
+    // find and return all $catagory article
     public function catagory($catagory)
     {
         $articles = $this->articleService->catagory($catagory);
-        if ($articles->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'There is no article with catagory:' . $catagory,
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => $articles,
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => $articles->isEmpty() ? 'There is no article with catagory:' . $catagory : 'Query success',
+            'data' => $articles->isEmpty() ? '' : $articles,
+        ], 200);
     }
 
-    // find and show article which title contains $request->key
+    // find and return article which title contains $request->key
     public function search(Request $request)
     {
         $articles = $this->articleService->search($request->key);
-        if ($articles->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'There is no article with keyword:' . $request->key,
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => $articles,
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => $articles->isEmpty() ? 'There is no article with keyword:' . $request->key : 'Query success',
+            'data' => $articles->isEmpty() ? '' : $articles,
+        ], 200);
     }
 
-    // find and show article which author is $name
+    // find and return article which author is $name
     public function user($name)
     {
         $articles = $this->articleService->user($name);
-        if ($articles->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'There is no article with author:' . $name,
-                'data' => '',
-            ], 500);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Query success',
-                'data' => $articles,
-            ], 200);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => $articles->isEmpty() ? 'There is no article with author:' . $name : 'Query success',
+            'data' => $articles->isEmpty() ? '' : $articles,
+        ], 200);
     }
 }
