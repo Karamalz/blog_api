@@ -70,6 +70,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\entities\User::class,
         ],
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => App\entities\Role::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',

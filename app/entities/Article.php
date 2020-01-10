@@ -13,11 +13,11 @@ class Article extends Model
 
     public function messages()
     {
-        return $this->hasMany('App\Message', 'message_article_id');
+        return $this->hasMany('App\entities\Message', 'message_article_id');
     }
 
     public function users()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\entities\User');
     }
 }
