@@ -6,8 +6,8 @@ use App\Http\Requests\RegistrationFormRequest;
 use App\services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -21,6 +21,18 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|max:10',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validate->errors()->first(),
+                'data' => '',
+            ], 422);
+        }
         $input = $request->only('email', 'password');
         $token = null;
 
