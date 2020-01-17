@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegistrationFormRequest;
 use App\services\UserService;
 use Illuminate\Http\Request;
-use JWTAuth;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
@@ -62,8 +63,22 @@ class AuthController extends Controller
  * @param RegistrationFormRequest $request
  * @return \Illuminate\Http\JsonResponse
  */
-    public function register(RegistrationFormRequest $request)
+    public function register(Request $request)
     {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6|max:10',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validate->errors()->first(),
+                'data' => '',
+            ], 422);
+        }
+
         $user = $this->userService->register($request);
 
         return response()->json([

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\entities\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
